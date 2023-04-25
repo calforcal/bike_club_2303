@@ -5,7 +5,7 @@ require "./lib/bike_club"
 RSpec.describe BikeClub do
   before(:each) do
     @club = BikeClub.new("Thank Gravel It's Friday")
-    @biker = Biker.new("Kenny", 30)
+    @biker1 = Biker.new("Kenny", 30)
     @biker2 = Biker.new("Athena", 15)
     @biker3 = Biker.new("Bicycle Micycle", 100)
     @ride1 = Ride.new({name: "Walnut Creek Trail", distance: 10.7, loop: false, terrain: :hills})
@@ -48,13 +48,17 @@ RSpec.describe BikeClub do
       @biker1.log_ride(@ride1, 91.1)
       @biker1.log_ride(@ride2, 60.9)
 
-      @bike2.log_ride(@ride1, 92.5)
-      @bike2.log_ride(@ride1, 91.1)
+      @biker2.log_ride(@ride1, 92.5)
+      @biker2.log_ride(@ride2, 61.1)
 
-      @biker3.log_ride(@ride1, 92.5)
-      @biker3.log_ride(@ride1, 91.1)
-      @biker3.log_ride(@ride2, 60.9)
-      @biker3.log_ride(@ride2, 61.6)
+      @biker3.log_ride(@ride1, 73.5)
+      @biker3.log_ride(@ride2, 40.3)
+      @biker3.log_ride(@ride3, 120.9)
+      @biker3.log_ride(@ride3, 131.6)
+
+      @club.add_biker(@biker1)
+      @club.add_biker(@biker2)
+      @club.add_biker(@biker3)
 
       expect(@club.most_rides).to eq(@biker3)
     end
