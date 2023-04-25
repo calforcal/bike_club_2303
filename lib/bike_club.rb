@@ -1,10 +1,13 @@
 class BikeClub
   attr_reader :name, :bikers, :group_rides
 
+  @@instances = []
+
   def initialize(name)
     @name = name
     @bikers = []
     @group_rides = []
+    @@instances << self
   end
 
   def add_biker(biker)
@@ -46,5 +49,18 @@ class BikeClub
 
     @group_rides << ride
     ride
+  end
+
+  def self.all
+    @@instances
+  end
+
+  def self.clear
+    @@instances.clear
+  end
+
+  def self.best_rider(ride)
+    best_times = all.map { |club| club.best_time(ride) }
+    best_times.min_by { |biker| biker.personal_record(ride) }
   end
 end
