@@ -31,4 +31,8 @@ class BikeClub
 
     fastest_times.min_by { |rider, time| fastest_times[rider] }.first
   end
+
+  def bikers_eligible(ride)
+    @bikers.select { |biker| biker.can_ride?(ride)}
+  end
 end
