@@ -63,4 +63,26 @@ RSpec.describe BikeClub do
       expect(@club.most_rides).to eq(@biker3)
     end
   end
+
+  describe "#best_time" do
+    it "can return the biker with the best time on a given ride" do
+      @biker1.log_ride(@ride1, 72.5)
+      @biker1.log_ride(@ride1, 91.1)
+      @biker1.log_ride(@ride2, 60.9)
+
+      @biker2.log_ride(@ride1, 92.5)
+      @biker2.log_ride(@ride2, 61.1)
+
+      @biker3.log_ride(@ride1, 73.5)
+      @biker3.log_ride(@ride2, 40.3)
+      @biker3.log_ride(@ride3, 120.9)
+      @biker3.log_ride(@ride3, 131.6)
+
+      @club.add_biker(@biker1)
+      @club.add_biker(@biker2)
+      @club.add_biker(@biker3)
+
+      expect(@club.best_time(@ride1)).to eq(@biker1)
+    end
+  end
 end
