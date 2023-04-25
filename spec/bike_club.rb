@@ -5,9 +5,13 @@ require "./lib/bike_club"
 RSpec.describe BikeClub do
   before(:each) do
     @club = BikeClub.new("Thank Gravel It's Friday")
+    @club2 = BikeClub.new("Rapha")
     @biker1 = Biker.new("Kenny", 30)
     @biker2 = Biker.new("Athena", 15)
     @biker3 = Biker.new("Bicycle Micycle", 100)
+    @biker4 = Biker.new("Cris", 40)
+    @biker5 = Biker.new("Arthur", 60)
+    @biker6 = Biker.new("Zoe", 100)
     @ride1 = Ride.new({name: "Walnut Creek Trail", distance: 10.7, loop: false, terrain: :hills})
     @ride2 = Ride.new({name: "Town Lake", distance: 14.9, loop: true, terrain: :gravel})
     @ride3 = Ride.new({name: "Flagstaff", distance: 6.8, loop: false, terrain: :hills})
@@ -19,6 +23,12 @@ RSpec.describe BikeClub do
     @biker2.learn_terrain!(:hills)
     @biker3.learn_terrain!(:gravel)
     @biker3.learn_terrain!(:hills)
+    @biker4.learn_terrain!(:gravel)
+    @biker4.learn_terrain!(:hills)
+    @biker5.learn_terrain!(:gravel)
+    @biker5.learn_terrain!(:hills)
+    @biker6.learn_terrain!(:gravel)
+    @biker6.learn_terrain!(:hills)
   end
 
   describe "#initialize" do
@@ -116,7 +126,7 @@ RSpec.describe BikeClub do
       @club.add_biker(@biker1)
       @club.add_biker(@biker2)
       @club.add_biker(@biker3)
-      
+
       expected = {
         start_time: "12:00.00",
         ride: @ride1,
@@ -127,6 +137,29 @@ RSpec.describe BikeClub do
       @club.record_group_ride(@ride1)
 
       expect(@club.group_rides).to eq([expected])
+    end
+  end
+
+  describe "#self.best_rider" do
+    it "can return the best_rider for a given ride across all BikeClub instances" do
+      BikeClub.clear
+      @club = BikeClub.new("Thank Gravel It's Friday")
+      @club2 = BikeClub.new("Rapha")
+      @club.add_biker(@biker1)
+      @club.add_biker(@biker2)
+      @club.add_biker(@biker3)
+      @club2.add_biker(@biker4)
+      @club2.add_biker(@biker5)
+      @club2.add_biker(@biker6)
+
+      @biker1.log_ride(@ride1, 92.5)
+      @biker2.log_ride(@ride1, 78.9)
+      @biker3.log_ride(@ride1, 84.2)
+      @biker4.log_ride(@ride1, 82.5)
+      @biker5.log_ride(@ride1, 98.5)
+      @biker6.log_ride(@ride1, 68.5)
+
+      expect(BikeClub.best_rider(@ride1)).to eq(@biker6)
     end
   end
 end
