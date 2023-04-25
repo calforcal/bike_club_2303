@@ -95,4 +95,38 @@ RSpec.describe BikeClub do
       expect(@club.bikers_eligible(@ride1)).to eq([@biker1, @biker3])
     end
   end
+
+  describe "#record_group_ride(ride) && #group_rides" do
+    it "can return a hash with group ride details" do
+      @club.add_biker(@biker1)
+      @club.add_biker(@biker2)
+      @club.add_biker(@biker3)
+
+      allow(Time).to receive(:now).and_return("12:00.00")
+      expected = {
+        start_time: "12:00.00",
+        ride: @ride1,
+        members: [@biker1, @biker3]
+      }
+
+      expect(@club.record_group_ride(@ride1)).to eq(expected)
+    end
+
+    it "can return the recorded group rides" do
+      @club.add_biker(@biker1)
+      @club.add_biker(@biker2)
+      @club.add_biker(@biker3)
+      
+      expected = {
+        start_time: "12:00.00",
+        ride: @ride1,
+        members: [@biker1, @biker3]
+      }
+
+      allow(Time).to receive(:now).and_return("12:00.00")
+      @club.record_group_ride(@ride1)
+
+      expect(@club.group_rides).to eq([expected])
+    end
+  end
 end
